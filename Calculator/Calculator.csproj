@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="calculator-6546339-5376602.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="calculator-6546339-5376602.png" />
+  </ItemGroup>
+
+</Project>
