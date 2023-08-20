@@ -4,28 +4,25 @@ using System.Windows.Controls;
 
 namespace Calculator
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         double temp = 0;
-        string operation = ""; 
-        string output = ""; 
-            
+        string operation = "";
+        string output = "";
+        private bool isConverted = false;
 
         public MainWindow()
         {
             InitializeComponent();
             DivideBtn.Content = "\u00F7";
 
-            
+
         }
-      
+
         private void NumBtn_Click(object sender, RoutedEventArgs e)
         {
             string name = ((Button)sender).Name;
-            
+
 
             switch (name)
             {
@@ -80,10 +77,13 @@ namespace Calculator
                     break;
 
                 case "CommaBtn":
-                    if (!output.Contains('.'))
+                    if (!output.Contains(','))
                     {
-                        output += '.';
-                        OutputTextBlock.Text = output;
+                        if (!string.IsNullOrEmpty(output)) // Проверка, есть ли уже число
+                        {
+                            output += ','; // Добавляем запятую
+                            OutputTextBlock.Text = output;
+                        }
                     }
                     break;
 
@@ -92,7 +92,7 @@ namespace Calculator
 
         private void MinusBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(output !="")
+            if (output != "")
             {
                 temp = double.Parse(output);
                 output = "";
@@ -132,12 +132,11 @@ namespace Calculator
 
         private void MinusPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (output != ".")
-                if (output != "")
+            if (!string.IsNullOrEmpty(OutputTextBlock.Text))
             {
-                temp = double.Parse(OutputTextBlock.Text);
-                temp = Math.Abs(temp) * (-1);
-                OutputTextBlock.Text = temp.ToString();
+                double currentValue = double.Parse(OutputTextBlock.Text);
+                double newValue = -currentValue; // Изменение знака числа
+                OutputTextBlock.Text = newValue.ToString();
             }
         }
 
@@ -145,7 +144,7 @@ namespace Calculator
         {
             double outputTemp;
 
-            switch(operation)
+            switch (operation)
             {
                 case "Minus":
                     outputTemp = temp - double.Parse(output);
@@ -166,7 +165,7 @@ namespace Calculator
                     break;
 
                 case "Divide":
-                    if(double.Parse(output) !=0)
+                    if (double.Parse(output) != 0)
                     {
                         outputTemp = temp / double.Parse(output);
                         output = outputTemp.ToString();
@@ -176,6 +175,7 @@ namespace Calculator
             }
         }
 
+
         private void ClearBtn_Click(object sender, RoutedEventArgs e)
         {
             output = "";
@@ -184,20 +184,15 @@ namespace Calculator
 
         private void RemoveBtn_Click(object sender, RoutedEventArgs e)
         {
-            OutputTextBlock.Text = output;
-            if (output.Length > 0)
+            if (!string.IsNullOrEmpty(OutputTextBlock.Text))
             {
-                output = output.Remove(output.Length -1,1);
-            }
-            if (output == "")
-            {
-                output = "";
+                OutputTextBlock.Text = OutputTextBlock.Text.Substring(0, OutputTextBlock.Text.Length - 1);
             }
         }
 
         private void CosBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
                 double cos = Convert.ToDouble(OutputTextBlock.Text);
                 cos = Math.Cos(cos);
@@ -207,7 +202,7 @@ namespace Calculator
 
         private void SinBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
                 double sin = Convert.ToDouble(OutputTextBlock.Text);
                 sin = Math.Sin(sin);
@@ -217,7 +212,7 @@ namespace Calculator
 
         private void CtanBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
                 double ctan = Convert.ToDouble(OutputTextBlock.Text);
                 ctan = +1 / Math.Tan(ctan);
@@ -227,7 +222,7 @@ namespace Calculator
 
         private void TanBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
                 double tan = Convert.ToDouble(OutputTextBlock.Text);
                 tan = Math.Tan(tan);
@@ -237,32 +232,40 @@ namespace Calculator
 
         private void BinBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
-                int outputTemp = int.Parse(OutputTextBlock.Text);
-                OutputTextBlock.Text = Convert.ToString(outputTemp, 2);
+                int outputTemp;
+                if (int.TryParse(OutputTextBlock.Text, out outputTemp))
+                {
+
+                    OutputTextBlock.Text = Convert.ToString(outputTemp, 2);
+                    isConverted = true;
+                }
             }
         }
 
         private void HexBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
-                int outputTemp = int.Parse(OutputTextBlock.Text);
-                OutputTextBlock.Text = Convert.ToString(outputTemp, 16);
+                int outputTemp;
+                if (int.TryParse(OutputTextBlock.Text, out outputTemp))
+                {
+                    OutputTextBlock.Text = Convert.ToString(outputTemp, 16);
+                    isConverted = true;
+                }
             }
-           /*if (output == hex)
-            {
-                int intValue = int.Parse(output, System.Globalization.NumberStyles.HexNumber);
-            }*/
         }
-
         private void OctBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (output != "")
+            if (!isConverted && !string.IsNullOrEmpty(OutputTextBlock.Text))
             {
-                int outputTemp = int.Parse(OutputTextBlock.Text);
-                OutputTextBlock.Text = Convert.ToString(outputTemp, 8);
+                int outputTemp;
+                if (int.TryParse(OutputTextBlock.Text, out outputTemp))
+                {
+                    OutputTextBlock.Text = Convert.ToString(outputTemp, 8);
+                    isConverted = true;
+                }
             }
         }
 
