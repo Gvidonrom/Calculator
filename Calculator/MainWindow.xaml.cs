@@ -10,22 +10,22 @@ namespace Calculator
     public partial class MainWindow : Window
     {
         double temp = 0;
-        string operation = ""; 
-        string output = ""; 
-            
+        string operation = "";
+        string output = "";
+
 
         public MainWindow()
         {
             InitializeComponent();
             DivideBtn.Content = "\u00F7";
 
-            
+
         }
-      
+
         private void NumBtn_Click(object sender, RoutedEventArgs e)
         {
             string name = ((Button)sender).Name;
-            
+
 
             switch (name)
             {
@@ -92,7 +92,7 @@ namespace Calculator
 
         private void MinusBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(output !="")
+            if (output != "")
             {
                 temp = double.Parse(output);
                 output = "";
@@ -134,18 +134,18 @@ namespace Calculator
         {
             if (output != ".")
                 if (output != "")
-            {
-                temp = double.Parse(OutputTextBlock.Text);
-                temp = Math.Abs(temp) * (-1);
-                OutputTextBlock.Text = temp.ToString();
-            }
+                {
+                    temp = double.Parse(OutputTextBlock.Text);
+                    temp = temp * -1;
+                    OutputTextBlock.Text = temp.ToString();
+                }
         }
 
         private void EqualsBtn_Click(object sender, RoutedEventArgs e)
         {
             double outputTemp;
 
-            switch(operation)
+            switch (operation)
             {
                 case "Minus":
                     outputTemp = temp - double.Parse(output);
@@ -166,7 +166,7 @@ namespace Calculator
                     break;
 
                 case "Divide":
-                    if(double.Parse(output) !=0)
+                    if (double.Parse(output) != 0)
                     {
                         outputTemp = temp / double.Parse(output);
                         output = outputTemp.ToString();
@@ -187,7 +187,7 @@ namespace Calculator
             OutputTextBlock.Text = output;
             if (output.Length > 0)
             {
-                output = output.Remove(output.Length -1,1);
+                output = output.Remove(output.Length - 1, 1);
             }
             if (output == "")
             {
@@ -251,10 +251,6 @@ namespace Calculator
                 int outputTemp = int.Parse(OutputTextBlock.Text);
                 OutputTextBlock.Text = Convert.ToString(outputTemp, 16);
             }
-           /*if (output == hex)
-            {
-                int intValue = int.Parse(output, System.Globalization.NumberStyles.HexNumber);
-            }*/
         }
 
         private void OctBtn_Click(object sender, RoutedEventArgs e)
